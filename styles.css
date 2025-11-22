@@ -1,0 +1,315 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #4a5568;
+    margin-bottom: 10px;
+    font-size: 2.5em;
+}
+
+header p {
+    color: #718096;
+    font-size: 1.2em;
+}
+
+.phone-interface {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.status-display {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#status {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #4a5568;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f7fafc;
+    border-radius: 10px;
+    border-left: 5px solid #4299e1;
+}
+
+#conversation-log {
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.conversation-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.assistant-message {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+}
+
+.user-message {
+    background: #f3e5f5;
+    border-left: 4px solid #9c27b0;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.call-button {
+    background: #48bb78;
+    color: white;
+}
+
+.call-button:hover {
+    background: #38a169;
+    transform: translateY(-2px);
+}
+
+.mic-button {
+    background: #4299e1;
+    color: white;
+}
+
+.mic-button:hover:not(:disabled) {
+    background: #3182ce;
+    transform: translateY(-2px);
+}
+
+.end-call-button {
+    background: #f56565;
+    color: white;
+}
+
+.end-call-button:hover:not(:disabled) {
+    background: #e53e3e;
+    transform: translateY(-2px);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.caller-info {
+    background: #f0fff4;
+    border: 2px solid #48bb78;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.caller-info h3 {
+    color: #2d3748;
+    margin-bottom: 15px;
+}
+
+#collected-data {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #48bb78;
+}
+
+.database-section {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.database-section h3 {
+    color: #4a5568;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#callers-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.caller-record {
+    background: #f8f9fa;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.caller-record h4 {
+    color: #2d3748;
+    margin-bottom: 10px;
+}
+
+.caller-record p {
+    margin: 5px 0;
+    color: #4a5568;
+}
+
+.clear-button {
+    background: #ed8936;
+    color: white;
+    display: block;
+    margin: 20px auto 0;
+}
+
+.clear-button:hover {
+    background: #dd6b20;
+    transform: translateY(-2px);
+}
+
+.export-button {
+    background: #38a169;
+    color: white;
+    display: block;
+    margin: 10px auto;
+}
+
+.export-button:hover {
+    background: #2f855a;
+    transform: translateY(-2px);
+}
+
+.recording {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.speaking {
+    background: #fef5e7 !important;
+    border-left-color: #f6ad55 !important;
+}
+
+.install-button {
+    background: #4299e1;
+    color: white;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.install-button:hover {
+    background: #3182ce;
+    transform: translateY(-2px);
+}
+
+/* Améliorations mobiles */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header {
+        padding: 20px;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+    
+    .phone-interface {
+        padding: 20px;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    button {
+        width: 100%;
+        max-width: 280px;
+        padding: 18px 25px;
+        font-size: 1.2em;
+    }
+    
+    #conversation-log {
+        max-height: 200px;
+        font-size: 0.9em;
+    }
+    
+    .database-section {
+        padding: 20px;
+    }
+    
+    .caller-record {
+        font-size: 0.9em;
+    }
+}
+
+/* Support tactile */
+button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* Prévenir le zoom sur les inputs */
+input, select, textarea {
+    font-size: 16px;
+}
+
+/* Mode sombre pour mobile */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    }
+}

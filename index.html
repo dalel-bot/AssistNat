@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Assistant Téléphonique IA - Natech Training</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Natassist">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Assistant Téléphonique IA</h1>
+            <p>Natech Training - Formation Professionnelle</p>
+        </header>
+
+        <div class="phone-interface">
+            <div class="status-display">
+                <div id="status">Prêt à recevoir votre appel</div>
+                <div id="conversation-log"></div>
+            </div>
+
+            <div class="controls">
+                <button id="call-btn" class="call-button">
+                    📞 Démarrer l'appel
+                </button>
+                <button id="mic-btn" class="mic-button" disabled>
+                    🎤 Répondre (ou taper)
+                </button>
+                <button id="end-call-btn" class="end-call-button" disabled>
+                    📵 Raccrocher
+                </button>
+            </div>
+
+            <div class="caller-info" id="caller-info" style="display: none;">
+                <h3>Informations collectées :</h3>
+                <div id="collected-data"></div>
+            </div>
+        </div>
+
+        <div class="database-section">
+            <h3>📋 Appelants enregistrés</h3>
+            <div id="callers-list"></div>
+            <button id="export-excel-btn" class="export-button">📊 Exporter Excel</button>
+            <button id="clear-data-btn" class="clear-button">Effacer les données</button>
+        </div>
+    </div>
+
+    <script src="assistant.js"></script>
+    <script>
+        // Enregistrer le Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('SW enregistré'))
+                .catch(err => console.log('Erreur SW:', err));
+        }
+        
+        // Prompt d'installation PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Afficher bouton d'installation
+            const installBtn = document.createElement('button');
+            installBtn.textContent = '📱 Installer l\'app';
+            installBtn.className = 'install-button';
+            installBtn.onclick = () => {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        installBtn.remove();
+                    }
+                });
+            };
+            document.querySelector('.container').prepend(installBtn);
+        });
+    </script>
+</body>
+</html>
