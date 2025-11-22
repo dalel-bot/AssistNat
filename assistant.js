@@ -7,8 +7,7 @@ class AIPhoneAssistant {
         this.synthesis = window.speechSynthesis;
         this.isListening = false;
         this.isSpeaking = false;
-        this.userHasInteracted = false;
-        this.pendingUtterance = null;
+
         
         this.conversationSteps = [
             {
@@ -73,32 +72,11 @@ class AIPhoneAssistant {
     }
 
     setupEventListeners() {
-        this.callBtn.addEventListener('click', () => {
-            this.enableAudio();
-            this.startCall();
-        });
-        this.micBtn.addEventListener('click', () => {
-            this.enableAudio();
-            this.toggleListening();
-        });
+        this.callBtn.addEventListener('click', () => this.startCall());
+        this.micBtn.addEventListener('click', () => this.toggleListening());
         this.endCallBtn.addEventListener('click', () => this.endCall());
         this.clearDataBtn.addEventListener('click', () => this.clearAllData());
         this.exportExcelBtn.addEventListener('click', () => this.exportToExcel());
-        
-        // Fix iOS - détecter première interaction
-        document.addEventListener('click', () => this.enableAudio(), { once: true });
-        document.addEventListener('touchstart', () => this.enableAudio(), { once: true });
-    }
-    
-    enableAudio() {
-        if (!this.userHasInteracted) {
-            this.userHasInteracted = true;
-            // Jouer l'utterance en attente
-            if (this.pendingUtterance) {
-                this.synthesis.speak(this.pendingUtterance);
-                this.pendingUtterance = null;
-            }
-        }
     }
 
     initializeSpeechRecognition() {
@@ -189,56 +167,54 @@ class AIPhoneAssistant {
         utterance.volume = 1.0; // Volume max pour iOS
         utterance.lang = 'fr-FR';
         
-        // Fix iOS - attendre les voix
-        const speakNow = () => {
-            const voices = this.synthesis.getVoices();
-            const naturalVoice = voices.find(voice => 
-                voice.lang.startsWith('fr') && 
-                (voice.name.includes('Hortense') || 
-                 voice.name.includes('Julie') ||
-                 voice.name.includes('Natural') ||
-                 voice.name.includes('Neural'))
-            ) || voices.find(voice => voice.lang.startsWith('fr'));
-            
-            if (naturalVoice) {
-                utterance.voice = naturalVoice;
-                console.log('Voix utilisée:', naturalVoice.name);
-            }
+        const voices = this.synthesis.getVoices();
+        const naturalVoice = voices.find(voice => 
+            voice.lang.startsWith('fr')
+        );
+        
+        if (naturalVoice) {
+            utterance.voice = naturalVoice;
+        }
 
-            utterance.onend = () => {
-                this.isSpeaking = false;
-                this.status.classList.remove('speaking');
-                if (this.isCallActive) {
-                    this.micBtn.disabled = false;
-                    this.updateStatus('Cliquez sur le micro pour répondre');
-                }
-            };
-
-            utterance.onerror = () => {
-                this.isSpeaking = false;
-                this.status.classList.remove('speaking');
-                if (this.isCallActive) {
-                    this.micBtn.disabled = false;
-                    this.updateStatus('Cliquez sur le micro pour répondre');
-                }
-            };
-
-            // Fix iOS - démarrer après interaction utilisateur
-            if (this.userHasInteracted) {
-                this.synthesis.speak(utterance);
-            } else {
-                // Stocker pour jouer après interaction
-                this.pendingUtterance = utterance;
-                this.updateStatus('Cliquez n\'importe où pour activer le son');
+        utterance.onend = () => {
+            this.isSpeaking = false;
+            this.status.classList.remove('speaking');
+            if (this.isCallActive) {
+                this.micBtn.disabled = false;
+                this.updateStatus('Cliquez sur le micro pour répondre');
             }
         };
 
-        // iOS nécessite un délai
-        if (voices.length === 0) {
-            setTimeout(speakNow, 100);
-        } else {
-            speakNow();
-        }
+        utterance.onerror = () => {
+            this.isSpeaking = false;
+            this.status.classList.remove('speaking');
+            if (this.isCallActive) {
+                this.micBtn.disabled = false;
+                this.updateStatus('Cliquez sur le micro pour répondre');
+            }
+        };
+
+        // Force audio activation on iOS
+        const playAudio = () => {
+            try {
+                this.synthesis.speak(utterance);
+            } catch (e) {
+                console.log('Erreur audio:', e);
+                // Fallback: afficher le texte
+                this.updateStatus('Audio indisponible: ' + text.substring(0, 50) + '...');
+                setTimeout(() => {
+                    this.isSpeaking = false;
+                    this.status.classList.remove('speaking');
+                    if (this.isCallActive) {
+                        this.micBtn.disabled = false;
+                        this.updateStatus('Cliquez sur le micro pour répondre');
+                    }
+                }, 3000);
+            }
+        };
+
+        // iOS fix: play immediately
+        playAudio();
     }
 
     toggleListening() {
