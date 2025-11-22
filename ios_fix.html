@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Audio iOS</title>
+    <style>
+        body { font-family: Arial; padding: 20px; text-align: center; }
+        button { padding: 20px; font-size: 18px; margin: 10px; }
+        #result { margin: 20px; padding: 15px; background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h2>🔊 Test Audio iPhone</h2>
+    <button onclick="testAudio()">Test Son</button>
+    <button onclick="testVoices()">Lister Voix</button>
+    <div id="result"></div>
+
+    <script>
+        function testAudio() {
+            const text = "Bonjour, test audio iPhone";
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'fr-FR';
+            utterance.volume = 1.0;
+            utterance.rate = 0.8;
+            
+            utterance.onstart = () => {
+                document.getElementById('result').innerHTML = '✅ Audio démarré';
+            };
+            
+            utterance.onend = () => {
+                document.getElementById('result').innerHTML += '<br>✅ Audio terminé';
+            };
+            
+            utterance.onerror = (e) => {
+                document.getElementById('result').innerHTML = '❌ Erreur: ' + e.error;
+            };
+            
+            speechSynthesis.speak(utterance);
+        }
+        
+        function testVoices() {
+            const voices = speechSynthesis.getVoices();
+            let html = '<h3>Voix disponibles:</h3>';
+            voices.forEach(voice => {
+                if (voice.lang.includes('fr')) {
+                    html += `<p>✅ ${voice.name} (${voice.lang})</p>`;
+                }
+            });
+            document.getElementById('result').innerHTML = html;
+        }
+        
+        // Charger les voix
+        setTimeout(testVoices, 1000);
+    </script>
+</body>
+</html>
