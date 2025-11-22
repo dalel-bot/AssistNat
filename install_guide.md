@@ -67,6 +67,13 @@
 
 ## 🔧 Dépannage mobile
 
+### **Son ne marche pas sur iPhone :**
+- **Cliquez d'abord** sur "Démarrer l'appel" pour activer l'audio
+- **Vérifiez le volume** de l'iPhone (boutons latéraux)
+- **Désactivez le mode silencieux** (bouton latéral)
+- **Utilisez Safari** plutôt que Chrome sur iOS
+- **Redémarrez Safari** si le problème persiste
+
 ### **Micro ne fonctionne pas :**
 - Autorisez les permissions micro
 - Utilisez HTTPS obligatoirement
